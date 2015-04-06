@@ -1,0 +1,10 @@
+<launch>
+    <!-- stage -->
+    <node
+        pkg="stage_ros"
+        type="stageros"
+        name="stage_node"
+        args="/home/sidney/ROS/catkin_ws/src/ros_interface/world/map.world"
+    />
+</launch>
+

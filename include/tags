@@ -1,0 +1,34 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+B_SIZE	node.hpp	23;"	d
+NODE_H	node.hpp	8;"	d
+ROS_INTERFACE_H	ros_interface.hpp	8;"	d
+T_REAL	node.hpp	18;"	d
+T_STAGE	node.hpp	19;"	d
+T_TURTLE	node.hpp	20;"	d
+id	node.hpp	/^    int id;$/;"	m	class:node
+nh	node.hpp	/^    ros::NodeHandle nh;$/;"	m	class:node
+node	node.hpp	/^class node {$/;"	c
+nodes_ptr	ros_interface.hpp	/^    std::vector<node*> nodes_ptr;$/;"	m	class:ros_interface
+pose	node.hpp	/^    position pose;$/;"	m	class:node
+position	node.hpp	/^typedef struct position {$/;"	s
+position	node.hpp	/^} position;$/;"	t	typeref:struct:position
+pub	node.hpp	/^    ros::Publisher pub;$/;"	m	class:node
+ros_interface	ros_interface.hpp	/^class ros_interface {$/;"	c
+sub	node.hpp	/^    ros::Subscriber sub;$/;"	m	class:node
+theta	node.hpp	/^    double theta;   \/\/ angular velocity$/;"	m	struct:velocity
+theta	node.hpp	/^    double theta;   \/\/ direction$/;"	m	struct:position
+type	node.hpp	/^    int type;$/;"	m	class:node
+vel	node.hpp	/^    velocity vel;$/;"	m	class:node
+velocity	node.hpp	/^typedef struct velocity {$/;"	s
+velocity	node.hpp	/^} velocity;$/;"	t	typeref:struct:velocity
+x	node.hpp	/^    double x;       \/\/ position in x$/;"	m	struct:position
+x	node.hpp	/^    double x;       \/\/ velocity in x$/;"	m	struct:velocity
+y	node.hpp	/^    double y;       \/\/ position in y$/;"	m	struct:position
+y	node.hpp	/^    double y;       \/\/ velocity in y$/;"	m	struct:velocity
+z	node.hpp	/^    double z;       \/\/ position in z$/;"	m	struct:position
+z	node.hpp	/^    double z;       \/\/ velocity in z$/;"	m	struct:velocity

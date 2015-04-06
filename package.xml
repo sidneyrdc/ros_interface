@@ -1,0 +1,18 @@
+<package>
+  <!-- Package Metadata -->
+  <name>ros_interface</name>
+  <maintainer email="sydney.rdc@hotmail.com">SIDNEY RDC</maintainer>
+  <description>
+    Interface to external access to the ROS environment.
+  </description>
+  <version>0.0.0</version>
+  <license>BSD</license>
+
+  <!-- Required by Catkin -->
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <!-- Package Dependencies -->
+  <build_depend>roscpp</build_depend>
+  <run_depend>roscpp</run_depend>
+</package>
+

@@ -1,0 +1,8 @@
+<launch>
+    <!-- p3at -->
+    <node pkg="ROSARIA" type="RosAria" name="p3at">
+        <param name="port" value="/dev/ttyS0" />
+        <param name="tf_prefix" value="p3at" />
+    </node>
+</launch>
+
