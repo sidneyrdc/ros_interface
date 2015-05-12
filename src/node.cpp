@@ -1,12 +1,19 @@
 /**********************************************************************
 *   Node class implementation to ROS interface
 *   Written by Sidney RDC, 2015.
-*   Last Change:2015 Abr 04 05:08:15
+*   Last Change:2015 Abr 11 15:50:07
 **********************************************************************/
 
+#include <signal.h>
 #include "node.hpp"
 
 using namespace std;
+
+// Call back to keyboard interruption
+void sim_out(int signum) {
+    cout << "Keyboard Interruption!\n";
+    exit(signum);
+}
 
 // Default constructor
 node::node() {
@@ -20,6 +27,9 @@ node::node(const int id, const int type, const string target, const position ini
     this->init_pose = init_pose;
     this->pose = init_pose;
     stringstream topic;
+
+    // Signal to keyboard interruption
+    signal(SIGINT,sim_out);
 
     // Make the subscriber and publisher according with the robot type
     // > turtlesim robots
@@ -51,6 +61,9 @@ node::node(const int id, const int type, const string target, const position ini
         topic.str("");
         topic << target << "/pose";
 
+        // Wait for subscriber topic
+        while(!check_topic(topic.str())) sleep(2);
+
         // Subscribe position
         sub_pose = nh.subscribe(topic.str(),B_SIZE,&node::turtle_callback,this);
 
@@ -64,6 +77,9 @@ node::node(const int id, const int type, const string target, const position ini
 
         // Make the topic with "target/pose" to real robots
         else if(type == T_REAL) topic << target << "/pose";
+
+        // Wait for subscriber topic
+        while(!check_topic(topic.str())) sleep(2);
 
         // Subscribe odometry position
         sub_pose = nh.subscribe(topic.str(),B_SIZE,&node::odom_callback,this);
@@ -107,6 +123,20 @@ position node::get_pose() {
 // Get velocity
 velocity node::get_vel() {
     return vel;
+}
+
+// Verify if a topic exist
+bool node::check_topic(const string topic) {
+    stringstream cmd;
+
+    // Set cmd with "rostopic info topic"
+    cmd.str("");
+    cmd << "rostopic info " << topic;
+
+    // Test the topic existance
+    if(!system(cmd.str().c_str())) return true;
+
+    return false;
 }
 
 // Turtlesim position callback function
