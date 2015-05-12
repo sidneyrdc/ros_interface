@@ -1,7 +1,7 @@
 /**********************************************************************
 *	Node class declaration to ROS interface
 *	Written by Sidney RDC, 2015.
-*	Last Change:2015 Abr 04 05:01:52
+*	Last Change:2015 Abr 11 15:50:20
 **********************************************************************/
 
 #ifndef NODE_H
@@ -18,7 +18,7 @@
 #include "ros_interface.hpp"
 
 // Message buffer size
-#define B_SIZE 100
+#define B_SIZE 1
 
 // Node class to ROS interface
 class node {
@@ -68,6 +68,9 @@ private:
 
     // Subscriber position topics
     ros::Subscriber sub_pose;
+
+    // Verify if a topic exist
+    bool check_topic(const std::string topic);
 
     // Turtlesim position callback function
     void turtle_callback(const turtlesim::Pose::ConstPtr &msg);

@@ -1,7 +1,7 @@
 /**********************************************************************
 *	ROS Communication Interface declaration
 *	Written by Sidney RDC, 2015.
-*	Last Change:2015 Abr 04 14:42:23
+*	Last Change:2015 Abr 09 01:29:37
 **********************************************************************/
 
 #ifndef ROS_INTERFACE_H
@@ -56,8 +56,8 @@ public:
     // A specific node receive a message
     position node_receive(const int id);
 
-    // Data capture frequency (Hz)
-    void clock(const float time);
+    // Data capture frequency
+    void clock(const float dt);
 
     // Return true if ros_interface is running
     bool ros_ok();
