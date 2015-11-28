@@ -3,6 +3,7 @@ if &cp | set nocp | endif
 let s:cpo_save=&cpo
 set cpo&vim
 inoremap <silent> <SNR>18_AutoPairsReturn =AutoPairsReturn()
+inoremap <silent> <SNR>16_AutoPairsReturn =AutoPairsReturn()
 map! <S-Insert> <MiddleMouse>
 nnoremap <silent>  :call CommentLine()
 vnoremap <silent>  :call RangeCommentLine()
@@ -65,15 +66,20 @@ set window=45
 let s:so_save = &so | let s:siso_save = &siso | set so=0 siso=0
 let v:this_session=expand("<sfile>:p")
 silent only
-cd ~/ROS/catkin_ws/src/ros_interface/src
+cd ~/catkin_ws/src/ros_interface/src
 if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
   let s:wipebuf = bufnr('%')
 endif
 set shortmess=aoO
-badd +9 ~/ROS/catkin_ws/src/ros_interface/src/ros_interface.cpp
+badd +1 ~/catkin_ws/src/ros_interface/ros_interface.session
+badd +1 ~/ROS/catkin_ws/src/ros_interface/src/ros_interface.cpp
 badd +52 ~/ROS/catkin_ws/src/ros_interface/src/node.cpp
-args ros_interface.cpp
-edit ~/ROS/catkin_ws/src/ros_interface/src/ros_interface.cpp
+badd +64 ~/catkin_ws/src/ros_interface/src/node.cpp
+badd +56 ~/catkin_ws/src/ros_interface/include/node.hpp
+badd +44 ~/catkin_ws/src/ros_interface/src/ros_interface.cpp
+badd +40 ~/catkin_ws/src/ros_interface/include/ros_interface.hpp
+args ~/catkin_ws/src/ros_interface/ros_interface.cpp
+edit ~/catkin_ws/src/ros_interface/src/ros_interface.cpp
 set splitbelow splitright
 wincmd _ | wincmd |
 vsplit
@@ -83,11 +89,11 @@ set nosplitbelow
 set nosplitright
 wincmd t
 set winheight=1 winwidth=1
-exe 'vert 1resize ' . ((&columns * 31 + 79) / 158)
-exe 'vert 2resize ' . ((&columns * 126 + 79) / 158)
+exe 'vert 1resize ' . ((&columns * 31 + 88) / 177)
+exe 'vert 2resize ' . ((&columns * 145 + 88) / 177)
 argglobal
 enew
-file ~/ROS/catkin_ws/src/ros_interface/src/NERD_tree_1
+file ~/catkin_ws/src/ros_interface/src/NERD_tree_2
 let s:cpo_save=&cpo
 set cpo&vim
 inoremap <buffer> <silent> <BS> =AutoPairsDelete()
@@ -223,18 +229,18 @@ argglobal
 let s:cpo_save=&cpo
 set cpo&vim
 inoremap <buffer> <silent> <BS> =AutoPairsDelete()
-inoremap <buffer> <silent> å =AutoPairsFastWrap()
-inoremap <buffer> <silent> â =AutoPairsBackInsert()
-inoremap <buffer> <silent> <expr> ð AutoPairsToggle()
 inoremap <buffer> <silent> î :call AutoPairsJump()a
+inoremap <buffer> <silent> <expr> ð AutoPairsToggle()
+inoremap <buffer> <silent> â =AutoPairsBackInsert()
+inoremap <buffer> <silent> å =AutoPairsFastWrap()
 inoremap <buffer> <silent>  =AutoPairsDelete()
 inoremap <buffer> <silent>   =AutoPairsSpace()
 inoremap <buffer> <silent> " =AutoPairsInsert('"')
 inoremap <buffer> <silent> ' =AutoPairsInsert('''')
 inoremap <buffer> <silent> ( =AutoPairsInsert('(')
 inoremap <buffer> <silent> ) =AutoPairsInsert(')')
-noremap <buffer> <silent> ð :call AutoPairsToggle()
 noremap <buffer> <silent> î :call AutoPairsJump()
+noremap <buffer> <silent> ð :call AutoPairsToggle()
 inoremap <buffer> <silent> [ =AutoPairsInsert('[')
 inoremap <buffer> <silent> ] =AutoPairsInsert(']')
 inoremap <buffer> <silent> ` =AutoPairsInsert('`')
@@ -350,16 +356,15 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 112 - ((0 * winheight(0) + 22) / 44)
+let s:l = 59 - ((43 * winheight(0) + 22) / 44)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-112
+59
 normal! 0
 wincmd w
-2wincmd w
-exe 'vert 1resize ' . ((&columns * 31 + 79) / 158)
-exe 'vert 2resize ' . ((&columns * 126 + 79) / 158)
+exe 'vert 1resize ' . ((&columns * 31 + 88) / 177)
+exe 'vert 2resize ' . ((&columns * 145 + 88) / 177)
 tabnext 1
 if exists('s:wipebuf')
   silent exe 'bwipe ' . s:wipebuf
