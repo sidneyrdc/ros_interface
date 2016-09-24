@@ -2,8 +2,9 @@ let SessionLoad = 1
 if &cp | set nocp | endif
 let s:cpo_save=&cpo
 set cpo&vim
-inoremap <silent> <SNR>17_AutoPairsReturn =AutoPairsReturn()
 map! <S-Insert> <MiddleMouse>
+inoremap <silent> <SNR>17_AutoPairsReturn =AutoPairsReturn()
+inoremap <silent> <SNR>15_AutoPairsReturn =AutoPairsReturn()
 nnoremap <silent>  :call CommentLine()
 vnoremap <silent>  :call RangeCommentLine()
 onoremap <silent>  :call CommentLine()
@@ -21,6 +22,7 @@ nnoremap ,p "+p
 map cp :cp
 map cn :cn
 nmap gx <Plug>NetrwBrowseX
+map <S-Insert> <MiddleMouse>
 nnoremap <silent> <Plug>NetrwBrowseX :call netrw#NetrwBrowseX(expand("<cWORD>"),0)
 nnoremap <silent> <F11> :call conque_term#exec_file()
 map <C-Tab><Right> :tabn
@@ -30,16 +32,17 @@ map <C-Tab><Up> :tabr
 map <C-F8> :copen
 map <C-F9> :make clean
 map <F9> :make
+map <F5> :setlocal spell
 map <F4> :se autochdir | ConqueTerm bash
 map <F3> :se autochdir | ConqueTermSplit bash
 map <F2> :NERDTree
-map <S-Insert> <MiddleMouse>
 let &cpo=s:cpo_save
 unlet s:cpo_save
 set autochdir
 set autoread
 set backspace=indent,eol,start
 set cindent
+set complete=.,w,b,u,t,i,kspell
 set expandtab
 set fileencodings=ucs-bom,utf-8,default,latin1
 set guifont=Monospace\ 9
@@ -72,9 +75,10 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 set shortmess=aoO
 badd +1 ~/catkin_ws/src/ros_interface/ros_interface.session
-badd +1 ~/catkin_ws/src/ros_interface/src/ros_interface.cpp
+badd +4 ~/catkin_ws/src/ros_interface/src/ros_interface.cpp
+badd +1 ~/catkin_ws/src/ros_interface/src/node.cpp
 args node.cpp
-edit ~/catkin_ws/src/ros_interface/src/ros_interface.cpp
+edit ~/catkin_ws/src/ros_interface/src/node.cpp
 set splitbelow splitright
 set nosplitbelow
 set nosplitright
@@ -84,18 +88,18 @@ argglobal
 let s:cpo_save=&cpo
 set cpo&vim
 inoremap <buffer> <silent> <BS> =AutoPairsDelete()
-inoremap <buffer> <silent> å =AutoPairsFastWrap()
-inoremap <buffer> <silent> â =AutoPairsBackInsert()
-inoremap <buffer> <silent> <expr> ð AutoPairsToggle()
 inoremap <buffer> <silent> î :call AutoPairsJump()a
+inoremap <buffer> <silent> <expr> ð AutoPairsToggle()
+inoremap <buffer> <silent> â =AutoPairsBackInsert()
+inoremap <buffer> <silent> å =AutoPairsFastWrap()
 inoremap <buffer> <silent>  =AutoPairsDelete()
 inoremap <buffer> <silent>   =AutoPairsSpace()
 inoremap <buffer> <silent> " =AutoPairsInsert('"')
 inoremap <buffer> <silent> ' =AutoPairsInsert('''')
 inoremap <buffer> <silent> ( =AutoPairsInsert('(')
 inoremap <buffer> <silent> ) =AutoPairsInsert(')')
-noremap <buffer> <silent> ð :call AutoPairsToggle()
 noremap <buffer> <silent> î :call AutoPairsJump()
+noremap <buffer> <silent> ð :call AutoPairsToggle()
 inoremap <buffer> <silent> [ =AutoPairsInsert('[')
 inoremap <buffer> <silent> ] =AutoPairsInsert(']')
 inoremap <buffer> <silent> ` =AutoPairsInsert('`')
@@ -123,7 +127,7 @@ set colorcolumn=80
 setlocal colorcolumn=80
 setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*,ex:*/,://
 setlocal commentstring=/*%s*/
-setlocal complete=.,w,b,u,t,i
+setlocal complete=.,w,b,u,t,i,kspell
 setlocal concealcursor=
 setlocal conceallevel=0
 setlocal completefunc=
@@ -145,7 +149,7 @@ setlocal foldcolumn=0
 setlocal foldenable
 setlocal foldexpr=0
 setlocal foldignore=#
-setlocal foldlevel=3
+setlocal foldlevel=2
 setlocal foldmarker={{{,}}}
 set foldmethod=syntax
 setlocal foldmethod=syntax
@@ -211,11 +215,11 @@ setlocal nowinfixheight
 setlocal nowinfixwidth
 setlocal wrap
 setlocal wrapmargin=0
-let s:l = 119 - ((1 * winheight(0) + 23) / 46)
+let s:l = 172 - ((36 * winheight(0) + 25) / 50)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-119
+172
 normal! 0
 tabnext 1
 if exists('s:wipebuf')
