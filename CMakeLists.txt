@@ -20,8 +20,8 @@ include_directories(${roscpp_INCLUDE_DIRS}, ${PROJECT_SOURCE_DIR}/include)
 add_library(ros_interface src/ros_interface.cpp src/node.cpp)
 
 # Define output directory
-#set_target_properties(ros_interface PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
-set_target_properties(ros_interface PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CATKIN_DEVEL_PREFIX}/lib)
+set_target_properties(ros_interface PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
+#set_target_properties(ros_interface PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${CATKIN_DEVEL_PREFIX}/lib)
 
 # Define compile flags
 set_target_properties(ros_interface PROPERTIES COMPILE_FLAGS "-Wall -Wextra -std=c++11 -g")
