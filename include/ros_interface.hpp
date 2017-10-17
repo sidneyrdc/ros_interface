@@ -1,8 +1,10 @@
-/**********************************************************************
-*	ROS Communication Interface declaration
-*	Written by Sidney RDC, 2015.
-*	Last Change:2015 Abr 09 01:29:37
-**********************************************************************/
+/******************************************************************************
+ * ROS Communication Interface <Header>
+ *
+ * Author: Sidney Carvalho - sydney.rdc@gmail.com
+ * Last Change: 2017 Oct 17 21:30:20
+ * Info: This file contains the header to the ROS interface library
+ *****************************************************************************/
 
 #ifndef ROS_INTERFACE_H
 #define ROS_INTERFACE_H
@@ -15,25 +17,15 @@
 #define T_STAGE 2
 #define T_TURTLE 3
 
-// Position data type
-struct position {
-    double x;       // position in x
-    double y;       // position in y
-    double z;       // position in z
-    double roll;    // lateral axis (X)
-    double pitch;   // longitudinal axis (Y)
-    double yaw;     // vertical axis (Z)
-};
-
-// Velocity data type
-struct velocity {
-    double x;       // velocity in x
-    double y;       // velocity in y
-    double z;       // velocity in z
-    double roll;    // lateral axis angular velocity
-    double pitch;   // longitudinal axis angular velocity
-    double yaw;     // vertical axis angular velocity
-};
+// Spatial coordinate type
+typedef struct {
+    double x;       // coordinate in x
+    double y;       // coordinate in y
+    double z;       // coordinate in z
+    double roll;    // angle of the lateral axis
+    double pitch;   // angle of the longitudinal axis
+    double yaw;     // angle of the vertical axis
+} space_t;
 
 // Node class to ROS interface
 class ros_interface {
@@ -48,13 +40,13 @@ public:
     ~ros_interface();
 
     // Add nodes to the interface
-    void add_node(int id, int type, std::string target, position init_pose);
+    void add_node(int id, int type, std::string target, space_t init_pose);
 
     // A specific node send a message
-    void node_send(const int id, velocity msg);
+    void node_send(const int id, space_t msg);
 
     // A specific node receive a message
-    position node_receive(const int id);
+    space_t node_receive(const int id);
 
     // Data capture frequency
     void clock(const float dt);

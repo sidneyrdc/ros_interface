@@ -2,7 +2,7 @@
  * Example of utilization of the library 'ros_interface'
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Abr 17 18:49:24
+ * Last Change: 2017 Oct 17 21:31:42
  * Info: Send and receive information from a node in the ROS environment.
  *****************************************************************************/
 
@@ -18,7 +18,7 @@ int main(int argc, char** argv) {
     ros_interface *ros_com = new ros_interface(argc, argv, "ex1");
 
     // initial positions
-    position pose1, pose2;
+    space_t pose1, pose2;
 
     pose1.x = 0;
     pose1.y = 0;
@@ -29,7 +29,7 @@ int main(int argc, char** argv) {
     pose2.yaw = 0;
 
     // initial velocities
-    velocity vel1, vel2;
+    space_t vel1, vel2;
 
     // insert the robots (if do you want to use another type of robot, change
     // the second parameter of 'add_node' with the following values:

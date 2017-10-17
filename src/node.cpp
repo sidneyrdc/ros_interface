@@ -1,8 +1,11 @@
-/**********************************************************************
-*   Node class implementation to ROS interface
-*   Written by Sidney RDC, 2015.
-*   Last Change:2015 Abr 11 15:50:07
-**********************************************************************/
+/******************************************************************************
+ * Node class to ROS interface <Implementation>
+ *
+ * Author: Sidney Carvalho - sydney.rdc@gmail.com
+ * Last Change: 2017 Oct 17 21:16:14
+ * Info: This file contains the implementation to the node class used by the ROS
+ * interface library
+ *****************************************************************************/
 
 #include <signal.h>
 #include "node.hpp"
@@ -21,7 +24,7 @@ node::node() {
 }
 
 // Initialize node interface
-node::node(const int id, const int type, const string target, const position init_pose) {
+node::node(const int id, const int type, const string target, const space_t init_pose) {
     this->id = id;
     this->type = type;
     this->init_pose = init_pose;
@@ -99,7 +102,7 @@ node::~node() {
 }
 
 // Publish a velocity message
-void node::publish(velocity vel_msg) {
+void node::publish(space_t vel_msg) {
     // Create velocity message package
     geometry_msgs::Twist msg;
 
@@ -116,12 +119,12 @@ void node::publish(velocity vel_msg) {
 }
 
 // Get position
-position node::get_pose() {
+space_t node::get_pose() {
     return pose;
 }
 
 // Get velocity
-velocity node::get_vel() {
+space_t node::get_vel() {
     return vel;
 }
 

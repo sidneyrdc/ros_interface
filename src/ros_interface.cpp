@@ -1,8 +1,10 @@
-/**********************************************************************
-*	ROS Communication Interface implementation
-*	Written by Sidney RDC, 2015.
-*	Last Change:2015 Abr 10 15:22:42
-**********************************************************************/
+/******************************************************************************
+ * ROS Communication Interface <Implementation>
+ *
+ * Author: Sidney Carvalho - sydney.rdc@gmail.com
+ * Last Change: 2017 Oct 17 21:13:03
+ * Info: This file contains the implementation to the ROS interface library
+ *****************************************************************************/
 
 #include <rosgraph_msgs/Clock.h>
 #include <unistd.h>
@@ -82,7 +84,7 @@ ros_interface::~ros_interface() {
 }
 
 // Add nodes to the interface
-void ros_interface::add_node(int id, int type, string target, position init_pose) {
+void ros_interface::add_node(int id, int type, string target, space_t init_pose) {
     unsigned int node_index;
 
     // Verify if the node has already insered in the array
@@ -107,7 +109,7 @@ bool ros_interface::check_node(const int id, unsigned int &index) {
 }
 
 // A specific node send a message
-void ros_interface::node_send(const int id, velocity msg) {
+void ros_interface::node_send(const int id, space_t msg) {
     unsigned int node_index;
 
     // Publish message if the id node exist
@@ -118,7 +120,7 @@ void ros_interface::node_send(const int id, velocity msg) {
 }
 
 // A specific node receive a message
-position ros_interface::node_receive(const int id) {
+space_t ros_interface::node_receive(const int id) {
     unsigned int node_index;
 
     // Receive a pose message from the id robot
@@ -127,7 +129,7 @@ position ros_interface::node_receive(const int id) {
         return temp.get_pose();
     }
 
-    return position();
+    return space_t();
 }
 
 // Data capture frequency
