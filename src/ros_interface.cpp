@@ -2,15 +2,15 @@
  * ROS Communication Interface <Implementation>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Oct 17 21:13:03
+ * Last Change: 2017 Oct 18 00:32:22
  * Info: This file contains the implementation to the ROS interface library
  *****************************************************************************/
 
 #include <rosgraph_msgs/Clock.h>
 #include <unistd.h>
 #include <thread>
-#include "ros_interface.hpp"
-#include "node.hpp"
+#include <ros_interface.hpp>
+#include <node.hpp>
 
 using namespace std;
 
@@ -56,12 +56,17 @@ void inc_time(clocker *c, const float dt) {
 // Default initializer
 ros_interface::ros_interface() {
     // NOP
+    printf("ROS Interface default constructor...\n");
 }
 
 // Initialize the ROS communication interface
-ros_interface::ros_interface(int argc, char** argv, string node_name) {
+ros_interface::ros_interface(const char *node_name) {
+    // External parameters to ROS initialization function (are not useful)
+    char **argv = 0;
+    int argc = 0;
+
     // ROS initialization
-    ros::init(argc,argv,node_name);
+    ros::init(argc, argv, node_name);
 
     // Set the time simulation as in "/clock"
     system("rosparam set /use_sim_time true");
@@ -70,8 +75,7 @@ ros_interface::ros_interface(int argc, char** argv, string node_name) {
     c = new clocker;
 
     // Set publisher on clocker
-    c->pub_clock = c->nh.advertise<rosgraph_msgs::Clock>("/clock",1);
-
+    c->pub_clock = c->nh.advertise<rosgraph_msgs::Clock>("/clock", 1);
 }
 
 // Destructor
@@ -84,7 +88,7 @@ ros_interface::~ros_interface() {
 }
 
 // Add nodes to the interface
-void ros_interface::add_node(int id, int type, string target, space_t init_pose) {
+void ros_interface::add_node(int id, int type, const char *target, space_t init_pose) {
     unsigned int node_index;
 
     // Verify if the node has already insered in the array

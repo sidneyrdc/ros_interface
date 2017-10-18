@@ -2,13 +2,13 @@
  * Node class to ROS interface <Implementation>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Oct 17 21:16:14
+ * Last Change: 2017 Oct 17 21:36:29
  * Info: This file contains the implementation to the node class used by the ROS
  * interface library
  *****************************************************************************/
 
 #include <signal.h>
-#include "node.hpp"
+#include <node.hpp>
 
 using namespace std;
 

@@ -2,7 +2,7 @@
  * Node class to ROS interface <Header>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Oct 17 21:15:41
+ * Last Change: 2017 Oct 17 21:37:01
  * Info: This file contains the header to the node class used by the ROS
  * interface library
  *****************************************************************************/
@@ -18,7 +18,7 @@
 #include <turtlesim/Pose.h>
 #include <turtlesim/Spawn.h>
 #include <turtlesim/Kill.h>
-#include "ros_interface.hpp"
+#include <ros_interface.hpp>
 
 // Message buffer size
 #define B_SIZE 1
