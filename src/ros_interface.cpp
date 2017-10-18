@@ -2,7 +2,7 @@
  * ROS Communication Interface <Implementation>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Oct 18 00:32:22
+ * Last Change: 2017 Out 18 19:53:26
  * Info: This file contains the implementation to the ROS interface library
  *****************************************************************************/
 
@@ -53,6 +53,21 @@ void inc_time(clocker *c, const float dt) {
     }
 }
 
+// Default constructor to space_t type
+space_t::space_t() {
+    // set all initial coordinates as zero
+    x = 0;
+    y = 0;
+    z = 0;
+    roll = 0;
+    pitch = 0;
+    yaw = 0;
+}
+
+void space_t::set(double val, double &var) {
+    var = val;
+}
+
 // Default initializer
 ros_interface::ros_interface() {
     // NOP
@@ -88,13 +103,13 @@ ros_interface::~ros_interface() {
 }
 
 // Add nodes to the interface
-void ros_interface::add_node(int id, int type, const char *target, space_t init_pose) {
+void ros_interface::add_node(int id, int type, const char *target, const space_t *init_pose) {
     unsigned int node_index;
 
     // Verify if the node has already insered in the array
     if(!check_node(id,node_index)) {
         // Create, initialize and store the node
-        nodes_ptr.push_back(new node(id,type,target,init_pose));
+        nodes_ptr.push_back(new node(id, type, target, *init_pose));
     }
 }
 

@@ -2,7 +2,7 @@
  * ROS Communication Interface <Header>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Oct 18 00:32:07
+ * Last Change: 2017 Out 18 19:51:07
  * Info: This file contains the header to the ROS interface library
  *****************************************************************************/
 
@@ -18,14 +18,20 @@
 #define T_TURTLE 3
 
 // General spatial coordinate type
-typedef struct {
+class space_t {
+public:
+    // Default constructor
+    space_t();
+
+    void set(double val, double &var);
+
     double x;       // coordinate in x
     double y;       // coordinate in y
     double z;       // coordinate in z
     double roll;    // angle of the lateral axis
     double pitch;   // angle of the longitudinal axis
     double yaw;     // angle of the vertical axis
-} space_t;
+};
 
 // Node class to ROS interface
 class ros_interface {
@@ -40,7 +46,7 @@ public:
     ~ros_interface();
 
     // Add nodes to the interface
-    void add_node(int id, int type, const char *target, space_t init_pose);
+    void add_node(int id, int type, const char *target, const space_t *init_pose);
 
     // A specific node send a message
     void node_send(const int id, space_t msg);
@@ -53,6 +59,7 @@ public:
 
     // Return true if ros_interface is running
     bool ros_ok();
+
 private:
     // Nodes pointer array
     std::vector<void*> nodes_ptr;
