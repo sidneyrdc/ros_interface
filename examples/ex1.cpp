@@ -2,7 +2,7 @@
  * Example of utilization of the library 'ros_interface'
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Oct 17 21:31:42
+ * Last Change: 2017 Oct 18 00:15:36
  * Info: Send and receive information from a node in the ROS environment.
  *****************************************************************************/
 
@@ -15,7 +15,7 @@ using namespace std;
 
 int main(int argc, char** argv) {
     // instantiate a 'ros_interface' pointer
-    ros_interface *ros_com = new ros_interface(argc, argv, "ex1");
+    ros_interface *ros_com = new ros_interface("ex1");
 
     // initial positions
     space_t pose1, pose2;
