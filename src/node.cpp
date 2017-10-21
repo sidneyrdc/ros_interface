@@ -2,7 +2,7 @@
  * Node class to ROS interface <Implementation>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Oct 17 21:36:29
+ * Last Change: 2017 Oct 20 22:12:26
  * Info: This file contains the implementation to the node class used by the ROS
  * interface library
  *****************************************************************************/
@@ -42,6 +42,10 @@ node::node(const int id, const int type, const string target, const space_t init
         ros::ServiceClient kill_turtle = nh.serviceClient<turtlesim::Kill>("kill");
         turtlesim::Kill kill;
         kill.request.name = "turtle1";
+        kill_turtle.call(kill);
+
+        // Kill the current turtle
+        kill.request.name = target;
         kill_turtle.call(kill);
 
         // Create new turtle
