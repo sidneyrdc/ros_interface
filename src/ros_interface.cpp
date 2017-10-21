@@ -2,7 +2,7 @@
  * ROS Communication Interface <Implementation>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Out 18 19:53:26
+ * Last Change: 2017 Oct 20 21:45:26
  * Info: This file contains the implementation to the ROS interface library
  *****************************************************************************/
 
@@ -56,6 +56,11 @@ void inc_time(clocker *c, const float dt) {
 // Default constructor to space_t type
 space_t::space_t() {
     // set all initial coordinates as zero
+    zero();
+}
+
+// Set all coordinates as zero
+void space_t::zero() {
     x = 0;
     y = 0;
     z = 0;
@@ -64,8 +69,34 @@ space_t::space_t() {
     yaw = 0;
 }
 
-void space_t::set(double val, double &var) {
-    var = val;
+// Set x coordinate
+void space_t::set_x(double val) {
+    this->x = val;
+}
+
+// Set y coordinate
+void space_t::set_y(double val) {
+    this->y = val;
+}
+
+// Set z coordinate
+void space_t::set_z(double val) {
+    this->z = val;
+}
+
+// Set roll coordinate
+void space_t::set_roll(double val) {
+    this->roll = val;
+}
+
+// Set pitch coordinate
+void space_t::set_pitch(double val) {
+    this->pitch = val;
+}
+
+// Set yaw coordinate
+void space_t::set_yaw(double val) {
+    this->yaw = val;
 }
 
 // Default initializer
@@ -103,14 +134,20 @@ ros_interface::~ros_interface() {
 }
 
 // Add nodes to the interface
-void ros_interface::add_node(int id, int type, const char *target, const space_t *init_pose) {
+void ros_interface::add_node(int id, int type, const char *target, space_t init_pose) {
     unsigned int node_index;
 
     // Verify if the node has already insered in the array
     if(!check_node(id,node_index)) {
         // Create, initialize and store the node
-        nodes_ptr.push_back(new node(id, type, target, *init_pose));
+        nodes_ptr.push_back(new node(id, type, target, init_pose));
     }
+}
+
+// Overload of add_node function to accept space_t pointer (demanded by julia)
+void ros_interface::add_node(int id, int type, const char *target, const space_t *init_pose) {
+    // Call add_node function
+    add_node(id, type, target, *init_pose);
 }
 
 // Verify if the node id exist in nodes array and return its index
@@ -136,6 +173,12 @@ void ros_interface::node_send(const int id, space_t msg) {
         node temp = *(node*) nodes_ptr[node_index];
         temp.publish(msg);
     }
+}
+
+// Overload of node_send function to accept space_t pointer (demanded by julia)
+void ros_interface::node_send(const int id, const space_t *msg) {
+    // Call node_send function
+    node_send(id, *msg);
 }
 
 // A specific node receive a message

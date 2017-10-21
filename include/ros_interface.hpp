@@ -2,14 +2,13 @@
  * ROS Communication Interface <Header>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Out 18 19:51:07
+ * Last Change: 2017 Oct 20 22:21:29
  * Info: This file contains the header to the ROS interface library
  *****************************************************************************/
 
 #ifndef ROS_INTERFACE_H
 #define ROS_INTERFACE_H
 
-#include <string>
 #include <vector>
 
 // Type of robots supported in the ROS
@@ -23,8 +22,18 @@ public:
     // Default constructor
     space_t();
 
-    void set(double val, double &var);
+    // Set all coordinates as zero
+    void zero();
 
+    // External settlers (used to set each coordinate in julia)
+    void set_x(double val);
+    void set_y(double val);
+    void set_z(double val);
+    void set_roll(double val);
+    void set_pitch(double val);
+    void set_yaw(double val);
+
+    // General space coordinates
     double x;       // coordinate in x
     double y;       // coordinate in y
     double z;       // coordinate in z
@@ -46,10 +55,16 @@ public:
     ~ros_interface();
 
     // Add nodes to the interface
+    void add_node(int id, int type, const char *target, space_t init_pose);
+
+    // Overload of add_node function to accept space_t pointer (demanded by julia)
     void add_node(int id, int type, const char *target, const space_t *init_pose);
 
     // A specific node send a message
     void node_send(const int id, space_t msg);
+
+    // Overload of node_send function to accept space_t pointer (demanded by julia)
+    void node_send(const int id, const space_t *msg);
 
     // A specific node receive a message
     space_t node_receive(const int id);

@@ -1,13 +1,22 @@
 #!/usr/bin/env julia
 
+#==============================================================================
+ = Example of utilization of the library 'ros_interface'
+ =
+ = Maintainer: Sidney Carvalho - sydney.rdc@gmail.com
+ = Last Change: 2017 Oct 20 22:23:40
+ = Info: Send and receive information from a node in the ROS environment.
+ =============================================================================#
+
 # check if the Cxx package is installed
 if typeof(Pkg.installed("Cxx")) == Void
     Pkg.add("Cxx")
 end
 
-using Cxx               # package to wrapper C++ code (demands Julia v0.6 or later)
+# package to wrapper C++ code (demands Julia v0.6 or later)
+using Cxx
 
-# importing shared c++ library and header file
+# importing shared C++ library and header file
 const path_to_lib = "../lib/"
 addHeaderDir(path_to_lib, kind=C_System)
 Libdl.dlopen(path_to_lib * "libros_interface.so", Libdl.RTLD_GLOBAL)
@@ -18,27 +27,48 @@ ros_com = @cxxnew ros_interface(pointer("julia_ros"))
 
 # initial positions
 pose1 = @cxxnew space_t()
+pose2 = @cxxnew space_t()
 
-#=@cxx pose1->x = Cdouble(2)=#
-#=x = @cxx pose1->x=#
-#=unsafe_store!(x::Ptr{Void}, pointer("a"), 1::Integer)=#
+@cxx pose1->zero()
+@cxx pose2->set_x(4)
+@cxx pose2->set_y(2)
+@cxx pose2->set_yaw(0)
 
-#=@cxx pose1->set_x(Cdouble(2))=#
-@cxx pose1->set(Cdouble(3), @cxx pose1->x)
+# initial velocities
+vel1 = @cxxnew space_t()
+vel2 = @cxxnew space_t()
 
-println(@cxx pose1->x)
+# insert the robots (if do you want to use another type of robot, change
+# the second parameter of 'add_node' with the following values - for now, julia
+# does not support macros from C, so use its equivalence in integer):
+# T_REAL for rosaria robots (use 1)
+# T_STAGE for stageros robots (use 2)
+# T_TURTLE for turtlesim robots (use 3)
+@cxx ros_com->add_node(1, 3, pointer("robot_3"), pose1)
+@cxx ros_com->add_node(2, 3, pointer("robot_2"), pose2)
 
-@cxx ros_com->add_node(Cint(1), Cint(1), pointer("robot_1"), pose1);
+# main loop
+while @cxx ros_com->ros_ok()
+    # set the data capture frequency (s)
+    @cxx ros_com->clock(0.1)
 
-#=type space_t=#
-    #=x::Cdouble=#
-    #=y::Cdouble=#
-    #=z::Cdouble=#
-    #=row::Cdouble=#
-    #=pitch::Cdouble=#
-    #=yaw::Cdouble=#
-#=end=#
+    # set random velocities
+    @cxx vel1->set_x(Cdouble(2 - randn(1)[1]))
+    @cxx vel1->set_yaw(Cdouble(2*randn(1)[1]))
 
-while  1 == 1
+    @cxx vel2->set_x(Cdouble(2 - randn(1)[1]))
+    @cxx vel2->set_yaw(Cdouble(2*randn(1)[1]))
+
+    # send velocities to ROS
+    @cxx ros_com->node_send(1, vel1)
+    @cxx ros_com->node_send(2, vel2)
+
+    # read positions from ROS
+    pose1 = @cxx ros_com->node_receive(1)
+    pose2 = @cxx ros_com->node_receive(2)
+
+    # print robot's positions
+    println("Robot 1 -> x:$(@cxx pose1->x) y:$(@cxx pose1->y) yaw:$((@cxx pose1->yaw)*180/pi)")
+    println("Robot 2 -> x:$(@cxx pose2->x) y:$(@cxx pose2->y) yaw:$((@cxx pose2->yaw)*180/pi)")
 end
 
