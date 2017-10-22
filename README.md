@@ -1,8 +1,8 @@
 # ROS Interface Library
 
-A shared library to simplify the access to the ROS environment. Allows writing
-and reading from topics and nodes of ROS without importing ROS libraries and their
-dependencies.
+A shared library to simplify the access to the ROS environment. Allows your algorithm in C++ 
+and Julia to write and read from topics and nodes of ROS without importing ROS libraries 
+and their dependencies.
 
 ## Installation
 
