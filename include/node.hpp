@@ -2,7 +2,7 @@
  * Node class to ROS interface <Header>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Oct 17 21:37:01
+ * Last Change: 2017 Out 23 15:00:28
  * Info: This file contains the header to the node class used by the ROS
  * interface library
  *****************************************************************************/
@@ -15,6 +15,7 @@
 #include <tf/transform_datatypes.h>
 #include <geometry_msgs/Twist.h>
 #include <geometry_msgs/Pose.h>
+#include <sensor_msgs/LaserScan.h>
 #include <turtlesim/Pose.h>
 #include <turtlesim/Spawn.h>
 #include <turtlesim/Kill.h>
@@ -39,7 +40,7 @@ public:
     int id;
 
     // Publish a velocity message
-    void publish(space_t vel_msg);
+    void publish(space_t vel);
 
     // Get position
     space_t get_pose();
@@ -72,6 +73,12 @@ private:
     // Subscriber position topics
     ros::Subscriber sub_pose;
 
+    // Subscriber laser topics
+    ros::Subscriber sub_laser;
+
+    // Subscriber sonar topics
+    ros::Subscriber sub_sonar;
+
     // Verify if a topic exist
     bool check_topic(const std::string topic);
 
@@ -80,6 +87,9 @@ private:
 
     // Odometry position callback function
     void odom_callback(const nav_msgs::Odometry::ConstPtr &msg);
+
+    // Laser readings callback function
+    void laser_callback(const sensor_msgs::LaserScan::ConstPtr &msg);
 };
 
 #endif

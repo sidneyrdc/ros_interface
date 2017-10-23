@@ -2,7 +2,7 @@
  * Node class to ROS interface <Implementation>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Oct 20 22:12:26
+ * Last Change: 2017 Out 23 19:37:39
  * Info: This file contains the implementation to the node class used by the ROS
  * interface library
  *****************************************************************************/
@@ -88,8 +88,23 @@ node::node(const int id, const int type, const string target, const space_t init
         // Wait for subscriber topic
         while(!check_topic(topic.str())) sleep(2);
 
-        // Subscribe odometry position
-        sub_pose = nh.subscribe(topic.str(),B_SIZE,&node::odom_callback,this);
+        // Subscribe for Odometry readings
+        sub_pose = nh.subscribe(topic.str(), B_SIZE, &node::odom_callback, this);
+
+        // Clean inputstream
+        topic.str("");
+
+        // Make the topic with "target/odom" to stage robots
+        if(type == T_STAGE) topic << target << "/base_scan_1";
+
+        // Make the topic with "target/pose" to real robots
+        else if(type == T_REAL) topic << target << "/base_scan";
+
+        // Wait for subscriber topic
+        while(!check_topic(topic.str())) sleep(2);
+
+        // Subscribe for laser readings
+        sub_laser = nh.subscribe(topic.str(), B_SIZE, &node::laser_callback, this);
     }
 
     // Make the topic with "target/cmd_vel"
@@ -106,17 +121,17 @@ node::~node() {
 }
 
 // Publish a velocity message
-void node::publish(space_t vel_msg) {
+void node::publish(space_t vel) {
     // Create velocity message package
     geometry_msgs::Twist msg;
 
     // Fill the message package
-    msg.linear.x = vel_msg.x;
-    msg.linear.y = vel_msg.y;
-    msg.linear.z = vel_msg.z;
-    msg.angular.x = vel_msg.roll;
-    msg.angular.y = vel_msg.pitch;
-    msg.angular.z = vel_msg.yaw;
+    msg.linear.x = vel.x;
+    msg.linear.y = vel.y;
+    msg.linear.z = vel.z;
+    msg.angular.x = vel.roll;
+    msg.angular.y = vel.pitch;
+    msg.angular.z = vel.yaw;
 
     // Publish the message
     pub_vel.publish(msg);
@@ -167,6 +182,14 @@ void node::odom_callback(const nav_msgs::Odometry::ConstPtr &msg) {
 
     // Get Euler angles
     pose.yaw = tf::getYaw(msg->pose.pose.orientation);
+}
+
+// Laser readings callback function
+void node::laser_callback(const sensor_msgs::LaserScan::ConstPtr &msg) {
+    // Get the number of laser beams
+    size_t n_laser = msg->ranges.size();
+
+    printf("laser number:%lu\n", n_laser);
 }
 
 // Show the position to the node
