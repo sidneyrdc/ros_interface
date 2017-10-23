@@ -1,6 +1,6 @@
 # topology_control.world - topology control input with 6 robots
 # Author: Sidney RDC
-# Last Change: 2015 Mar 23 22:38:09
+# Last Change: 2017 Out 23 13:13:46
 
 include "pioneer.inc"
 include "map.inc"
@@ -16,7 +16,7 @@ window
 
     # GUI options
     # 1=on 0=off
-    show_data 0
+    show_data 1
     show_flags 1
     show_blocks 1
     show_clock 1

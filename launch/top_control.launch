@@ -4,7 +4,7 @@
         pkg="stage_ros"
         type="stageros"
         name="stage_node"
-        args="/home/sidney/ROS/catkin_ws/src/ros_interface/world/topology_control.world"
+        args="$(find ros_interface)/world/topology_control.world"
     />
 </launch>
 
