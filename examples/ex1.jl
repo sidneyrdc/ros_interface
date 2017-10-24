@@ -4,7 +4,7 @@
  = Example of utilization of the library 'ros_interface'
  =
  = Maintainer: Sidney Carvalho - sydney.rdc@gmail.com
- = Last Change: 2017 Out 23 12:38:32
+ = Last Change: 2017 Oct 23 22:50:46
  = Info: Send and receive information from a node in the ROS environment.
  =============================================================================#
 
@@ -16,11 +16,18 @@ end
 # package to wrapper C++ code (demands Julia v0.6 or later)
 using Cxx
 
-# importing shared C++ library and header file
+# default C++ lib and include paths
 const path_to_lib = "../lib/"
-addHeaderDir(path_to_lib, kind=C_System)
+const path_to_include = "../include/"
+
+# define the path_to_include as default C++ headers folder
+addHeaderDir(path_to_include, kind=C_System)
+
+# load ROS interface shared library
 Libdl.dlopen(path_to_lib * "libros_interface.so", Libdl.RTLD_GLOBAL)
-cxxinclude("../include/ros_interface.hpp")
+
+cxxinclude("ros_interface.hpp")                 # ROS interface header
+cxxinclude("vector")                            # C++ vector header
 
 # instantiate a 'ros_interface' object
 ros_com = @cxxnew ros_interface(pointer("julia_ros"))
@@ -60,12 +67,22 @@ while @cxx ros_com->ros_ok()
     @cxx vel2->set_yaw(Cdouble(2*randn(1)[1]))
 
     # send velocities to ROS
-    @cxx ros_com->node_send(1, vel1)
-    @cxx ros_com->node_send(2, vel2)
+    @cxx ros_com->node_vel(1, vel1)
+    @cxx ros_com->node_vel(2, vel2)
 
     # read positions from ROS
-    pose1 = @cxx ros_com->node_receive(1)
-    pose2 = @cxx ros_com->node_receive(2)
+    pose1 = @cxx ros_com->node_pose(1)
+    pose2 = @cxx ros_com->node_pose(2)
+
+    # laser readings from ROS
+    lc1 = @cxx ros_com->node_laser(1)
+    lc2 = @cxx ros_com->node_laser(2)
+
+    # translate raw C++ readings to Julia array
+    laser1 = unsafe_wrap(Array, pointer(lc1), length(lc1))
+    laser2 = unsafe_wrap(Array, pointer(lc2), length(lc2))
+
+    println("laser 1 -> n:$(length(laser1)) data:$(laser1)")
 
     # print robot's positions
     println("Robot 1 -> x:$(@cxx pose1->x) y:$(@cxx pose1->y) yaw:$((@cxx pose1->yaw)*180/pi)")

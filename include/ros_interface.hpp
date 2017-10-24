@@ -2,7 +2,7 @@
  * ROS Communication Interface <Header>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Oct 20 22:21:29
+ * Last Change: 2017 Oct 23 21:54:38
  * Info: This file contains the header to the ROS interface library
  *****************************************************************************/
 
@@ -60,14 +60,17 @@ public:
     // Overload of add_node function to accept space_t pointer (demanded by julia)
     void add_node(int id, int type, const char *target, const space_t *init_pose);
 
-    // A specific node send a message
-    void node_send(const int id, space_t msg);
+    // Set the velocity of a specific node
+    void node_vel(const int id, space_t vel);
 
-    // Overload of node_send function to accept space_t pointer (demanded by julia)
-    void node_send(const int id, const space_t *msg);
+    // Overload of node_vel function to accept space_t pointer (demanded by julia)
+    void node_vel(const int id, const space_t *vel);
 
-    // A specific node receive a message
-    space_t node_receive(const int id);
+    // Get the position of a specific node
+    space_t node_pose(const int id);
+
+    // Get the laser readings of a specific node
+    std::vector<float> node_laser(const int id);
 
     // Data capture frequency
     void clock(const float dt);

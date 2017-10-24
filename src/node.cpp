@@ -2,7 +2,7 @@
  * Node class to ROS interface <Implementation>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Out 23 19:37:39
+ * Last Change: 2017 Oct 23 21:38:41
  * Info: This file contains the implementation to the node class used by the ROS
  * interface library
  *****************************************************************************/
@@ -147,6 +147,11 @@ space_t node::get_vel() {
     return vel;
 }
 
+// Get laser readings
+vector<float> node::get_laser() {
+    return laser;
+}
+
 // Verify if a topic exist
 bool node::check_topic(const string topic) {
     stringstream cmd;
@@ -186,10 +191,8 @@ void node::odom_callback(const nav_msgs::Odometry::ConstPtr &msg) {
 
 // Laser readings callback function
 void node::laser_callback(const sensor_msgs::LaserScan::ConstPtr &msg) {
-    // Get the number of laser beams
-    size_t n_laser = msg->ranges.size();
-
-    printf("laser number:%lu\n", n_laser);
+    // Get laser readings
+    laser = msg->ranges;
 }
 
 // Show the position to the node

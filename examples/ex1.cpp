@@ -2,7 +2,7 @@
  * Example of utilization of the library 'ros_interface'
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Oct 18 00:15:36
+ * Last Change: 2017 Oct 23 21:57:06
  * Info: Send and receive information from a node in the ROS environment.
  *****************************************************************************/
 
@@ -56,12 +56,12 @@ int main(int argc, char** argv) {
         vel2.yaw = 2 * double(rand())/double(RAND_MAX) - 1;
 
         // send velocities to ros
-        ros_com->node_send(1, vel1);
-        ros_com->node_send(2, vel2);
+        ros_com->node_vel(1, vel1);
+        ros_com->node_vel(2, vel2);
 
         // read positions from ros
-        pose1 = ros_com->node_receive(1);
-        pose2 = ros_com->node_receive(2);
+        pose1 = ros_com->node_pose(1);
+        pose2 = ros_com->node_pose(2);
 
         // print robot's positions
         cout << "Robot 1 -> x:" << pose1.x << " y:" << pose1.y << " yaw:" << (pose1.yaw * 180 / PI) << endl;

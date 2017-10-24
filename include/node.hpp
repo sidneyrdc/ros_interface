@@ -2,7 +2,7 @@
  * Node class to ROS interface <Header>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Out 23 15:00:28
+ * Last Change: 2017 Oct 23 21:31:50
  * Info: This file contains the header to the node class used by the ROS
  * interface library
  *****************************************************************************/
@@ -48,12 +48,18 @@ public:
     // Get velocity
     space_t get_vel();
 
+    // Get laser readings
+    std::vector<float> get_laser();
+
     // Show the position to the node
     void show_pose();
 
 private:
     // Type of node (real,stage,turtlesim)
     int type;
+
+    // Laser scan readings
+    std::vector<float> laser;
 
     // Type of subscriber message
     space_t pose;

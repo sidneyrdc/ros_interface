@@ -2,7 +2,7 @@
  * ROS Communication Interface <Implementation>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Oct 20 21:45:26
+ * Last Change: 2017 Oct 23 22:44:57
  * Info: This file contains the implementation to the ROS interface library
  *****************************************************************************/
 
@@ -164,34 +164,47 @@ bool ros_interface::check_node(const int id, unsigned int &index) {
     return false;
 }
 
-// A specific node send a message
-void ros_interface::node_send(const int id, space_t msg) {
+// Set the velocity of a specific node
+void ros_interface::node_vel(const int id, space_t msg) {
     unsigned int node_index;
 
     // Publish message if the id node exist
-    if(check_node(id,node_index)) {
+    if(check_node(id, node_index)) {
         node temp = *(node*) nodes_ptr[node_index];
         temp.publish(msg);
     }
 }
 
-// Overload of node_send function to accept space_t pointer (demanded by julia)
-void ros_interface::node_send(const int id, const space_t *msg) {
-    // Call node_send function
-    node_send(id, *msg);
+// Overload of node_vel function to accept space_t pointer (demanded by julia)
+void ros_interface::node_vel(const int id, const space_t *msg) {
+    // Call node_vel function
+    node_vel(id, *msg);
 }
 
-// A specific node receive a message
-space_t ros_interface::node_receive(const int id) {
+// Get the position of a specific node
+space_t ros_interface::node_pose(const int id) {
     unsigned int node_index;
 
     // Receive a pose message from the id robot
-    if(check_node(id,node_index)) {
+    if(check_node(id, node_index)) {
         node temp = *(node*) nodes_ptr[node_index];
         return temp.get_pose();
     }
 
     return space_t();
+}
+
+// Get the laser readings of a specific node
+vector<float> ros_interface::node_laser(const int id) {
+    unsigned int node_index;
+
+    // Receive the laser readings from the id robot
+    if(check_node(id, node_index)) {
+        node temp = *(node*) nodes_ptr[node_index];
+        return temp.get_laser();
+    }
+
+    return vector<float>();
 }
 
 // Data capture frequency
