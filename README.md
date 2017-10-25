@@ -1,7 +1,7 @@
-# ROS Interface Library
+# ROS Interface Library (C++ and Julia)
 
-A shared library to simplify the access to the ROS environment. Allows your algorithm in C++ 
-and Julia to write and read from topics and nodes of ROS without importing ROS libraries 
+A shared library to simplify the access to the ROS environment. Allows your algorithm in C++
+and Julia to write and read from topics and nodes of ROS without importing ROS libraries
 and their dependencies.
 
 ## Installation
@@ -45,3 +45,4 @@ Before compiling your project put the following parameter as a compiler option:
 
 **NOTE:** Examples of use in C/C++ and Julia can be found in the folder `examples`
 of the library source code.
+
