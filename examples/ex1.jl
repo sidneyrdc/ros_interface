@@ -4,7 +4,7 @@
  = Example of utilization of the library 'ros_interface'
  =
  = Maintainer: Sidney Carvalho - sydney.rdc@gmail.com
- = Last Change: 2017 Oct 23 22:50:46
+ = Last Change: 2017 Out 25 20:17:31
  = Info: Send and receive information from a node in the ROS environment.
  =============================================================================#
 
@@ -51,8 +51,8 @@ vel2 = @cxxnew space_t()
 # T_REAL for rosaria robots (use 1)
 # T_STAGE for stageros robots (use 2)
 # T_TURTLE for turtlesim robots (use 3)
-@cxx ros_com->add_node(1, 2, pointer("robot_0"), pose1)
-@cxx ros_com->add_node(2, 2, pointer("robot_1"), pose2)
+@cxx ros_com->add_node(1, 2, pointer("r1"), pose1)
+@cxx ros_com->add_node(2, 2, pointer("r2"), pose2)
 
 # main loop
 while @cxx ros_com->ros_ok()
