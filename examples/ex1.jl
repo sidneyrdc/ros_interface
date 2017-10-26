@@ -4,7 +4,7 @@
  = Example of utilization of the library 'ros_interface'
  =
  = Maintainer: Sidney Carvalho - sydney.rdc@gmail.com
- = Last Change: 2017 Out 25 20:17:31
+ = Last Change: 2017 Out 26 12:16:46
  = Info: Send and receive information from a node in the ROS environment.
  =============================================================================#
 
@@ -60,11 +60,11 @@ while @cxx ros_com->ros_ok()
     @cxx ros_com->clock(0.1)
 
     # set random velocities
-    @cxx vel1->set_x(Cdouble(2 - randn(1)[1]))
-    @cxx vel1->set_yaw(Cdouble(2*randn(1)[1]))
+    @cxx vel1->set_x(Cdouble(1 - randn(1)[1]))
+    @cxx vel1->set_yaw(Cdouble(randn(1)[1]))
 
-    @cxx vel2->set_x(Cdouble(2 - randn(1)[1]))
-    @cxx vel2->set_yaw(Cdouble(2*randn(1)[1]))
+    @cxx vel2->set_x(Cdouble(1 - randn(1)[1]))
+    @cxx vel2->set_yaw(Cdouble(randn(1)[1]))
 
     # send velocities to ROS
     @cxx ros_com->node_vel(1, vel1)
