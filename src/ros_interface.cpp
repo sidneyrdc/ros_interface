@@ -2,11 +2,12 @@
  * ROS Communication Interface <Implementation>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Out 30 17:06:41
+ * Last Change: 2017 Out 30 20:16:35
  * Info: This file contains the implementation to the ROS interface library
  *****************************************************************************/
 
 #include <rosgraph_msgs/Clock.h>
+#include <std_msgs/Bool.h>
 #include <unistd.h>
 #include <thread>
 #include <ros_interface.hpp>
@@ -30,6 +31,9 @@ struct sim_control {
 
 // Pointer to clocker
 clocker *c;
+
+// Is the ROS Interface increasing the ROS clock?
+bool inc_clock = false;
 
 // Pointer to sim_control
 sim_control *sim;
@@ -144,11 +148,17 @@ ros_interface::ros_interface(const char *node_name) {
     // Set the time simulation as in "/clock"
     system("rosparam set /use_sim_time true");
 
-    // Initialize the pointer to clocker
-    c = new clocker;
+    // Check if there are publishers in the topic "/clock"
+    if(!check_pub("/clock")) {
+        // The ROS Interface will increase the time in "/clock"
+        inc_clock = true;
 
-    // Set publisher on clocker
-    c->pub_clock = c->nh.advertise<rosgraph_msgs::Clock>("/clock", 1);
+        // Initialize the pointer to clocker
+        c = new clocker;
+
+        // Set publisher on clocker
+        c->pub_clock = c->nh.advertise<rosgraph_msgs::Clock>("/clock", 1);
+    }
 
     // Initialize the simulator controller
     sim = new sim_control;
@@ -267,7 +277,7 @@ vector<float> ros_interface::node_laser(const int id) {
 // Data capture frequency
 void ros_interface::clock(const float dt) {
     // Create the timer thread
-    if(!time_thread) time_thread = new std::thread(inc_time,c,dt);
+    if(!time_thread && inc_clock) time_thread = new std::thread(inc_time, c, dt);
 
     // Time for execute callback functions
     ros::spinOnce();

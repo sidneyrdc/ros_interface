@@ -2,7 +2,7 @@
  * Node class to ROS interface <Implementation>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Out 30 18:09:09
+ * Last Change: 2017 Out 30 20:04:58
  * Info: This file contains the implementation to the node class used by the ROS
  * interface library
  *****************************************************************************/
@@ -141,20 +141,6 @@ vector<float> node::get_laser() {
     return laser;
 }
 
-// Verify if a topic exist
-bool node::check_topic(const string topic) {
-    stringstream cmd;
-
-    // Set cmd with "rostopic info topic"
-    cmd.str("");
-    cmd << "rostopic info " << topic;
-
-    // Test the topic existance
-    if(!system(cmd.str().c_str())) return true;
-
-    return false;
-}
-
 // Turtlesim position callback function
 void node::turtle_callback(const turtlesim::Pose::ConstPtr &msg) {
     // Get positions
@@ -190,5 +176,48 @@ void node::show_pose() {
         << "robot:" << id << " "
         << "position=(" << pose.x << "," << pose.y << ")"
         << " direction=" << pose.yaw);
+}
+
+// Verify if a topic exist
+bool check_topic(const string topic) {
+    stringstream cmd;
+
+    // Set cmd with "rostopic info topic"
+    cmd.str("");
+    cmd << "rostopic info " << topic;
+
+    // Test the topic existence
+    if(!system(cmd.str().c_str())) return true;
+
+    return false;
+}
+
+// Verify if there are publishers in a topic
+bool check_pub(const char *topic) {
+    stringstream cmd;
+    char buffer[50];
+
+    // Set cmd with "rostopic info topic | grep Publishers" (to get the list of
+    // publishers in such topic)
+    cmd.str("");
+    cmd << "rostopic info " << topic << " | grep Publishers";
+
+    // Executes cmd in the shell and store its output in a pointer
+    FILE *shell_output = popen(cmd.str().c_str(), "r");
+
+    // If the command fails, return false
+    if (!shell_output) return false;
+
+    // Get the execution answer and store it in a buffer
+    fgets(buffer, sizeof(buffer), shell_output);
+
+    // Check if the output contains the word "None" or is empty (it is related
+    // with the publishers of a topic)
+    if(strstr(buffer, "None") != NULL || buffer[0] == '\0') return false;
+
+    // Close output pointer
+    pclose(shell_output);
+
+    return true;
 }
 

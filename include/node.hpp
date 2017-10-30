@@ -2,7 +2,7 @@
  * Node class to ROS interface <Header>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Out 30 18:13:27
+ * Last Change: 2017 Out 30 20:05:16
  * Info: This file contains the header to the node class used by the ROS
  * interface library
  *****************************************************************************/
@@ -85,9 +85,6 @@ private:
     // Subscriber sonar topics
     ros::Subscriber sub_sonar;
 
-    // Verify if a topic exist
-    bool check_topic(const std::string topic);
-
     // Turtlesim position callback function
     void turtle_callback(const turtlesim::Pose::ConstPtr &msg);
 
@@ -97,6 +94,12 @@ private:
     // Laser readings callback function
     void laser_callback(const sensor_msgs::LaserScan::ConstPtr &msg);
 };
+
+// Verify if a topic exist
+bool check_topic(const std::string topic);
+
+// Verify if there are publishers in a topic
+bool check_pub(const char *topic);
 
 #endif
 
