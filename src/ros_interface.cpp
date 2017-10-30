@@ -2,7 +2,7 @@
  * ROS Communication Interface <Implementation>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Oct 23 22:44:57
+ * Last Change: 2017 Out 30 17:06:41
  * Info: This file contains the implementation to the ROS interface library
  *****************************************************************************/
 
@@ -11,6 +11,7 @@
 #include <thread>
 #include <ros_interface.hpp>
 #include <node.hpp>
+#include <signal.h>
 
 using namespace std;
 
@@ -20,11 +21,32 @@ struct clocker {
     ros::Publisher pub_clock;
 };
 
+// Node handle and publishers to control the simulator (used in v-rep)
+struct sim_control {
+    ros::NodeHandle nh;
+    ros::Publisher sim_start;
+    ros::Publisher sim_stop;
+};
+
 // Pointer to clocker
 clocker *c;
 
+// Pointer to sim_control
+sim_control *sim;
+
+// Pointer to ros_interface
+ros_interface *ros_com;
+
 // Pointer to time thread
 std::thread *time_thread;
+
+// Call back to keyboard interruption
+void sim_out(int sig) {
+    printf("INFO@libros_interface.so \tKeyboard Interruption! Exiting with code(%d)...\n", sig);
+
+    // Call the destructor of the ros_interface static object
+    delete(ros_com);
+}
 
 // Increase the time and publish this to topic "/clock"
 void inc_time(clocker *c, const float dt) {
@@ -102,7 +124,7 @@ void space_t::set_yaw(double val) {
 // Default initializer
 ros_interface::ros_interface() {
     // NOP
-    printf("ROS Interface default constructor...\n");
+    printf("INFO@libros_interface \tROS Interface default constructor.\n");
 }
 
 // Initialize the ROS communication interface
@@ -110,6 +132,11 @@ ros_interface::ros_interface(const char *node_name) {
     // External parameters to ROS initialization function (are not useful)
     char **argv = 0;
     int argc = 0;
+
+    // Associate the static pointer with this ros_interface instance
+    ros_com = this;
+
+    printf("INFO@libros_interface.so \tStarting ROS Interface...\n");
 
     // ROS initialization
     ros::init(argc, argv, node_name);
@@ -122,15 +149,45 @@ ros_interface::ros_interface(const char *node_name) {
 
     // Set publisher on clocker
     c->pub_clock = c->nh.advertise<rosgraph_msgs::Clock>("/clock", 1);
+
+    // Initialize the simulator controller
+    sim = new sim_control;
+
+    // Set publishers of the simulation controller
+    sim->sim_start = sim->nh.advertise<std_msgs::Bool>("/startSimulation", 1);
+    sim->sim_stop = sim->nh.advertise<std_msgs::Bool>("/stopSimulation", 1);
+
+    // Wait for the topics be online
+    sleep(1);
+
+    // Start the simulation (v-rep)
+    std_msgs::Bool msg;
+    msg.data = true;
+    sim->sim_start.publish(msg);
+
+    // Signal to keyboard interruption (when ^C is pressed)
+    signal(SIGINT, sim_out);
 }
 
 // Destructor
 ros_interface::~ros_interface() {
-    // Delete all node pointers in nodes_ptr
-    for(auto x : nodes_ptr) delete *((node**) x);
+    printf("INFO@libros_interface.so \tAccessing the ROS Interface destructor...\n");
 
-    // Delete clock struct pointer
+    // Stop the simulation (v-rep)
+    std_msgs::Bool msg;
+    msg.data = true;
+    sim->sim_stop.publish(msg);
+
+    // Shutdown ROS Interface
+    ros::shutdown();
+
+    // Wait some time to correct finish the ROS Interface
+    sleep(1);
+
+    // Remove all the global pointers and arrays
+    nodes_ptr.clear();
     delete(c);
+    delete(sim);
 }
 
 // Add nodes to the interface

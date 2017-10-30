@@ -2,21 +2,14 @@
  * Node class to ROS interface <Implementation>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Out 25 18:47:28
+ * Last Change: 2017 Out 30 18:09:09
  * Info: This file contains the implementation to the node class used by the ROS
  * interface library
  *****************************************************************************/
 
-#include <signal.h>
 #include <node.hpp>
 
 using namespace std;
-
-// Call back to keyboard interruption
-void sim_out(int signum) {
-    cout << "Keyboard Interruption!\n";
-    exit(signum);
-}
 
 // Default constructor
 node::node() {
@@ -31,8 +24,7 @@ node::node(const int id, const int type, const string target, const space_t init
     this->pose = init_pose;
     stringstream topic;
 
-    // Signal to keyboard interruption
-    signal(SIGINT,sim_out);
+    printf("INFO@libros_interface.so \tAdding node to the interface...\n");
 
     // Make the subscriber and publisher according with the robot type
     // > turtlesim robots
@@ -74,7 +66,7 @@ node::node(const int id, const int type, const string target, const space_t init
         // Subscribe position
         sub_pose = nh.subscribe(topic.str(),B_SIZE,&node::turtle_callback,this);
 
-    // > stage and real robots
+    // > stage/gazebo and real robots
     } else {
         // Clean inputstream
         topic.str("");

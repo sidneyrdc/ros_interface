@@ -2,7 +2,7 @@
  * Node class to ROS interface <Header>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Oct 23 21:31:50
+ * Last Change: 2017 Out 30 18:13:27
  * Info: This file contains the header to the node class used by the ROS
  * interface library
  *****************************************************************************/
