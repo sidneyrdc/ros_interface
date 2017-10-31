@@ -2,7 +2,7 @@
  * Node class to ROS interface <Implementation>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Out 30 20:04:58
+ * Last Change: 2017 Out 31 18:26:52
  * Info: This file contains the implementation to the node class used by the ROS
  * interface library
  *****************************************************************************/
@@ -86,11 +86,8 @@ node::node(const int id, const int type, const string target, const space_t init
         // Clean inputstream
         topic.str("");
 
-        // Make the topic with "target/odom" to stage robots
-        if(type == T_STAGE) topic << target << "/base_scan_1";
-
-        // Make the topic with "target/pose" to real robots
-        else if(type == T_REAL) topic << target << "/base_scan";
+        // Make the topic with "target/base_scan" to stage robots
+        topic << target << "/base_scan";
 
         // Subscribe for laser readings
         if(check_topic(topic.str())) sub_laser = nh.subscribe(topic.str(), B_SIZE, &node::laser_callback, this);
