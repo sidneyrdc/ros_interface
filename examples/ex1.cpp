@@ -2,7 +2,7 @@
  * Example of utilization of the library 'ros_interface'
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Oct 23 21:57:06
+ * Last Change: 2017 Out 30 20:26:04
  * Info: Send and receive information from a node in the ROS environment.
  *****************************************************************************/
 
@@ -36,8 +36,8 @@ int main(int argc, char** argv) {
     // T_REAL for rosaria robots
     // T_STAGE for stageros robots
     // T_TURTLE for turtlesim robots)
-    ros_com->add_node(1, T_TURTLE, "robot_0", pose1);
-    ros_com->add_node(2, T_TURTLE, "robot_1", pose2);
+    ros_com->add_node(1, T_STAGE, "r1", pose1);
+    ros_com->add_node(2, T_STAGE, "r2", pose2);
 
     // set seed for random number generator
     srand(time(0));
