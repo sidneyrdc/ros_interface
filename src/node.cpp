@@ -2,7 +2,7 @@
  * Node class to ROS interface <Implementation>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Out 31 18:26:52
+ * Last Change: 2017 Nov 08 22:04:44
  * Info: This file contains the implementation to the node class used by the ROS
  * interface library
  *****************************************************************************/
@@ -24,7 +24,7 @@ node::node(const int id, const int type, const string target, const space_t init
     this->pose = init_pose;
     stringstream topic;
 
-    printf("INFO@libros_interface.so \tAdding node to the interface...\n");
+    printf("INFO@libros_interface.so \tAdding robot %s to the interface...\n", target.c_str());
 
     // Make the subscriber and publisher according with the robot type
     // > turtlesim robots
@@ -61,7 +61,7 @@ node::node(const int id, const int type, const string target, const space_t init
         topic << target << "/pose";
 
         // Wait for subscriber topic
-        while(!check_topic(topic.str())) sleep(2);
+        while(ros::ok() && !check_topic(topic.str())) sleep(2);
 
         // Subscribe position
         sub_pose = nh.subscribe(topic.str(),B_SIZE,&node::turtle_callback,this);
@@ -78,7 +78,7 @@ node::node(const int id, const int type, const string target, const space_t init
         else if(type == T_REAL) topic << target << "/pose";
 
         // Wait for subscriber topic
-        while(!check_topic(topic.str())) sleep(2);
+        while(ros::ok() && !check_topic(topic.str())) sleep(2);
 
         // Subscribe for Odometry readings
         sub_pose = nh.subscribe(topic.str(), B_SIZE, &node::odom_callback, this);

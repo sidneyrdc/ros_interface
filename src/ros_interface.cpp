@@ -2,7 +2,7 @@
  * ROS Communication Interface <Implementation>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Out 30 20:16:35
+ * Last Change: 2017 Nov 08 22:10:35
  * Info: This file contains the implementation to the ROS interface library
  *****************************************************************************/
 
@@ -46,10 +46,13 @@ std::thread *time_thread;
 
 // Call back to keyboard interruption
 void sim_out(int sig) {
-    printf("INFO@libros_interface.so \tKeyboard Interruption! Exiting with code(%d)...\n", sig);
+    printf("INFO@libros_interface.so \tKeyboard Interruption! Exiting with code %d...\n", sig);
 
     // Call the destructor of the ros_interface static object
     delete(ros_com);
+
+    // Exit with code sig
+    exit(sig);
 }
 
 // Increase the time and publish this to topic "/clock"
