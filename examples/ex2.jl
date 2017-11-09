@@ -4,7 +4,7 @@
  = Example of utilization of the library 'ros_interface'
  =
  = Maintainer: Sidney Carvalho - sydney.rdc@gmail.com
- = Last Change: 2017 Nov 05 00:52:33
+ = Last Change: 2017 Nov 09 13:15:23
  = Info: Send and receive information from a node in the ROS environment.
  =============================================================================#
 
@@ -34,6 +34,9 @@ ros_com = @cxxnew ros_interface(pointer("julia_ros"))
 
 # initial positions
 pose1 = @cxxnew space_t()
+
+@cxx pose1->set_x(2)
+@cxx pose1->set_y(4)
 
 # initial velocities
 vel1 = @cxxnew space_t()
