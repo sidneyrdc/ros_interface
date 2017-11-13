@@ -2,7 +2,7 @@
  * ROS Communication Interface <Header>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Out 30 17:07:34
+ * Last Change: 2017 Nov 13 15:08:39
  * Info: This file contains the header to the ROS interface library
  *****************************************************************************/
 
@@ -78,7 +78,13 @@ public:
     // Return true if ros_interface is running
     bool ros_ok();
 
+    // Remove ros_interface instance and all its nodes
+    void shutdown();
+
 private:
+    // Interface node name at ROS environment
+    const char *node_name;
+
     // Nodes pointer array
     std::vector<void*> nodes_ptr;
 

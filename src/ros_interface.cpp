@@ -2,7 +2,7 @@
  * ROS Communication Interface <Implementation>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Nov 08 22:10:35
+ * Last Change: 2017 Nov 13 15:06:23
  * Info: This file contains the implementation to the ROS interface library
  *****************************************************************************/
 
@@ -140,6 +140,9 @@ ros_interface::ros_interface(const char *node_name) {
     char **argv = 0;
     int argc = 0;
 
+    // Store the interface name at ROS environment
+    this->node_name = node_name;
+
     // Associate the static pointer with this ros_interface instance
     ros_com = this;
 
@@ -186,21 +189,8 @@ ros_interface::ros_interface(const char *node_name) {
 ros_interface::~ros_interface() {
     printf("INFO@libros_interface.so \tAccessing the ROS Interface destructor...\n");
 
-    // Stop the simulation (v-rep)
-    std_msgs::Bool msg;
-    msg.data = true;
-    sim->sim_stop.publish(msg);
-
-    // Shutdown ROS Interface
-    ros::shutdown();
-
-    // Wait some time to correct finish the ROS Interface
-    sleep(1);
-
-    // Remove all the global pointers and arrays
-    nodes_ptr.clear();
-    delete(c);
-    delete(sim);
+    // Call shutdown function
+    shutdown();
 }
 
 // Add nodes to the interface
@@ -306,5 +296,30 @@ void ros_interface::clock(const float dt) {
 // Return true if ros_interface is running
 bool ros_interface::ros_ok() {
     return ros::ok();
+}
+
+// Remove ros_interface instance and all its nodes
+void ros_interface::shutdown() {
+    printf("INFO@libros_interface.so \tStopping v-rep simulator...\n");
+
+    // Stop the simulation (v-rep)
+    std_msgs::Bool msg;
+    msg.data = true;
+    sim->sim_stop.publish(msg);
+
+    printf("INFO@libros_interface.so \tRemoving node %s from ROS...\n", node_name);
+
+    // Shutdown ROS Interface
+    ros::shutdown();
+
+    // Wait some time to correct finish the ROS Interface
+    sleep(1);
+
+    printf("INFO@libros_interface.so \tCleaning ros_interface nodes and structures...\n");
+
+    // Remove all the global pointers and arrays
+    nodes_ptr.clear();
+    delete(c);
+    delete(sim);
 }
 
