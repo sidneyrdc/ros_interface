@@ -4,7 +4,7 @@
  = Example of utilization of the library 'ros_interface'
  =
  = Maintainer: Sidney Carvalho - sydney.rdc@gmail.com
- = Last Change: 2017 Nov 09 13:15:23
+ = Last Change: 2017 Nov 13 19:17:53
  = Info: Send and receive information from a node in the ROS environment.
  =============================================================================#
 
@@ -51,7 +51,7 @@ vel1 = @cxxnew space_t()
 
 # control saturations
 max_vx = 1                  # maximum linear velocity
-max_va = 0.1                # maximum angular velocity
+max_va = 1                  # maximum angular velocity
 
 # variation limits
 max_dx = 10                 # maximum linear variation
@@ -134,6 +134,7 @@ while @cxx ros_com->ros_ok()
 
     # calculate the linear control signal
     ka == 0 ? u[1] = max_vx*kx : u[1] = 0
+    #=u[1] = max_vx*kx*(1 - ka)=#
 
     # set random velocities
     @cxx vel1->set_x(u[1])
