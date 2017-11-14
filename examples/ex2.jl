@@ -4,7 +4,7 @@
  = Example of utilization of the library 'ros_interface'
  =
  = Maintainer: Sidney Carvalho - sydney.rdc@gmail.com
- = Last Change: 2017 Nov 13 23:11:19
+ = Last Change: 2017 Nov 14 11:52:15
  = Info: Send and receive information from a node in the ROS environment.
  =============================================================================#
 
@@ -50,18 +50,18 @@ vel1 = @cxxnew space_t()
 @cxx ros_com->add_node(1, 2, pointer("r1"), pose1)
 
 # control saturations
-max_vx = 1                  # maximum linear velocity
-max_va = 1                  # maximum angular velocity
+const MAX_VX = 1                  # maximum linear velocity
+const MAX_VA = 1                  # maximum angular velocity
 
-# variation limits
-max_dx = 10                 # maximum linear variation
-min_dx = 0.1                # minimum linear variation
-max_da = pi/4               # maximum angular variation
-min_da = 0.01               # minimum angular variation
+# dead zones
+const MAX_DX = 10                 # maximum linear variation
+const MIN_DX = 0.1                # minimum linear variation
+const MAX_DA = pi/4               # maximum angular variation
+const MIN_DA = 0.01               # minimum angular variation
 
 # variables of proportionality
-kx = 0                      # to linear control
-ka = 0                      # to angular control
+kx = 0                            # to linear control
+ka = 0                            # to angular control
 
 # reference (x, y, θ)
 r = [3.0, 2.0, 0.0]
@@ -107,33 +107,33 @@ while @cxx ros_com->ros_ok()
     da > pi ? da = da - 2*pi : da < -pi ? da = 2*pi - abs(da) : 0
 
     # calculate the angular control gain
-    if da > -min_da && da < min_da
+    if da > -MIN_DA && da < MIN_DA
         ka = 0
-    elseif da > max_da
+    elseif da > MAX_DA
         ka = 1
-    elseif da < -max_da
+    elseif da < -MAX_DA
         ka = -1
-    elseif abs(da) >= min_da && abs(da) <= max_da
-        ka = da/max_da
+    elseif abs(da) >= MIN_DA && abs(da) <= MAX_DA
+        ka = da/MAX_DA
     end
 
     # calculate the angular control signal
-    u[2] = max_va*ka
+    u[2] = MAX_VA*ka
 
     # linear distance between the reference and the current point
     dx = norm(r[1:2] - x[1:2])
 
     # calculate the linear control gain
-    if dx < min_dx
+    if dx < MIN_DX
         kx = 0
-    elseif dx > max_dx
+    elseif dx > MAX_DX
         kx = 1
-    elseif dx >= min_dx && dx <= max_dx
-        kx = dx/max_dx
+    elseif dx >= MIN_DX && dx <= MAX_DX
+        kx = dx/MAX_DX
     end
 
     # calculate the linear control signal
-    u[1] = max_vx*kx*(1 - abs(ka))
+    u[1] = MAX_VX*kx*(1 - abs(ka))
 
     # set random velocities
     @cxx vel1->set_x(u[1])
