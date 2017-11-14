@@ -4,7 +4,7 @@
  = Example of utilization of the library 'ros_interface'
  =
  = Maintainer: Sidney Carvalho - sydney.rdc@gmail.com
- = Last Change: 2017 Nov 13 19:17:53
+ = Last Change: 2017 Nov 13 23:11:19
  = Info: Send and receive information from a node in the ROS environment.
  =============================================================================#
 
@@ -133,8 +133,7 @@ while @cxx ros_com->ros_ok()
     end
 
     # calculate the linear control signal
-    ka == 0 ? u[1] = max_vx*kx : u[1] = 0
-    #=u[1] = max_vx*kx*(1 - ka)=#
+    u[1] = max_vx*kx*(1 - abs(ka))
 
     # set random velocities
     @cxx vel1->set_x(u[1])

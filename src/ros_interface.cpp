@@ -2,7 +2,7 @@
  * ROS Communication Interface <Implementation>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Nov 13 15:06:23
+ * Last Change: 2017 Nov 13 23:13:02
  * Info: This file contains the implementation to the ROS interface library
  *****************************************************************************/
 
@@ -146,7 +146,7 @@ ros_interface::ros_interface(const char *node_name) {
     // Associate the static pointer with this ros_interface instance
     ros_com = this;
 
-    printf("INFO@libros_interface.so \tStarting ROS Interface...\n");
+    printf("INFO@libros_interface.so \tStarting ROS Interface as %s...\n", node_name);
 
     // ROS initialization
     ros::init(argc, argv, node_name);
