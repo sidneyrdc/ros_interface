@@ -2,7 +2,7 @@
  * ROS Communication Interface <Implementation>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Nov 13 23:13:02
+ * Last Change: 2017 Nov 17 15:00:34
  * Info: This file contains the implementation to the ROS interface library
  *****************************************************************************/
 
@@ -321,5 +321,14 @@ void ros_interface::shutdown() {
     nodes_ptr.clear();
     delete(c);
     delete(sim);
+}
+
+// Get ROS time (seconds)
+double ros_interface::get_time() {
+    // Get the current time in "/clock"
+    ros::Time ros_time = ros::Time::now();
+
+    // Return the current time in seconds
+    return ros_time.sec + 0.000000001*ros_time.nsec;
 }
 

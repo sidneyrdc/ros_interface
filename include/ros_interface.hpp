@@ -2,7 +2,7 @@
  * ROS Communication Interface <Header>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Nov 13 15:08:39
+ * Last Change: 2017 Nov 17 15:00:11
  * Info: This file contains the header to the ROS interface library
  *****************************************************************************/
 
@@ -80,6 +80,9 @@ public:
 
     // Remove ros_interface instance and all its nodes
     void shutdown();
+
+    // Get ROS time (seconds)
+    double get_time();
 
 private:
     // Interface node name at ROS environment
