@@ -1,0 +1,8 @@
+<launch>
+    <!-- p3dx -->
+    <node pkg="rosaria" type="RosAria" name="p3dx">
+        <param name="port" value="/dev/ttyS1" />
+        <param name="tf_prefix" value="p3dx" />
+    </node>
+</launch>
+

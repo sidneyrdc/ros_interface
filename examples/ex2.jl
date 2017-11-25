@@ -4,7 +4,7 @@
  = Example of utilization of the library 'ros_interface'
  =
  = Maintainer: Sidney Carvalho - sydney.rdc@gmail.com
- = Last Change: 2017 Nov 17 14:54:41
+ = Last Change: 2017 Nov 25 14:26:30
  = Info: Send and receive information from a node in the ROS environment.
  =============================================================================#
 
