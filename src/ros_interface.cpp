@@ -2,7 +2,7 @@
  * ROS Communication Interface <Implementation>
  *
  * Author: Sidney Carvalho - sydney.rdc@gmail.com
- * Last Change: 2017 Nov 25 10:55:15
+ * Last Change: 2017 Nov 27 12:08:23
  * Info: This file contains the implementation to the ROS interface library
  *****************************************************************************/
 
@@ -300,18 +300,20 @@ bool ros_interface::ros_ok() {
 
 // Remove ros_interface instance and all its nodes
 void ros_interface::shutdown() {
+    printf("INFO@libros_interface.so \tStopping the robots...\n");
+
+    // Send null velocities when using real robots
+    for(size_t i = 0; i < nodes_ptr.size(); i++) {
+        node temp = *(node*) nodes_ptr[i];
+        temp.publish(space_t());
+    }
+
     printf("INFO@libros_interface.so \tStopping v-rep simulator...\n");
 
     // Stop the simulation (v-rep)
     std_msgs::Bool msg;
     msg.data = true;
     sim->sim_stop.publish(msg);
-
-    // Send null velocities when using real robots
-    for(int i = 0; i < nodes_ptr.size(); i++) {
-        node temp = *(node*) nodes_ptr[i];
-        temp.publish(space_t());
-    }
 
     printf("INFO@libros_interface.so \tRemoving node %s from ROS...\n", node_name);
 
