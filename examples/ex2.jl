@@ -4,7 +4,7 @@
  = Example of utilization of the library 'ros_interface'
  =
  = Maintainer: Sidney Carvalho - sydney.rdc@gmail.com
- = Last Change: 2017 Nov 25 14:26:30
+ = Last Change: 2018 Set 17 19:21:48
  = Info: Send and receive information from a node in the ROS environment.
  =============================================================================#
 
@@ -47,7 +47,7 @@ vel1 = @cxxnew space_t()
 # T_REAL for rosaria robots (use 1)
 # T_STAGE for stageros robots (use 2)
 # T_TURTLE for turtlesim robots (use 3)
-@cxx ros_com->add_node(1, 2, pointer("robot_0"), pose1)
+@cxx ros_com->add_node(1, 2, pointer("r1"), pose1)
 
 # control saturations
 const MAX_VX = 1                  # maximum linear velocity
@@ -135,7 +135,7 @@ while @cxx ros_com->ros_ok()
     # calculate the linear control signal
     u[1] = MAX_VX*kx*(1 - abs(ka))
 
-    # set random velocities
+    # set the calculated velocities
     @cxx vel1->set_x(u[1])
     @cxx vel1->set_yaw(u[2])
 
