@@ -4,7 +4,7 @@
         pkg="stage_ros"
         type="stageros"
         name="stage_node"
-        args="$(find ros_interface)/world/topology_control.world">
+        args="$(find ros_interface)/stage/topology_control.world">
 
         <remap
             from="base_scan_0"

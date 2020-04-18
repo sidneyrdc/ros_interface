@@ -4,7 +4,7 @@
         pkg="stage_ros"
         type="stageros"
         name="stage_node"
-        args="$(find ros_interface)/world/map.world"
+        args="$(find ros_interface)/stage/map.world"
     />
 </launch>
 
