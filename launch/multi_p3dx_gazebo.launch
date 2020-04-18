@@ -1,0 +1,32 @@
+<launch>
+
+    <!-- Start Gazebo with an empty world -->
+    <include file="$(find amr_robots_gazebo)/example-world.launch" />
+
+    <!-- Add p3at robots -->
+
+    <group ns="r1">
+    <include file="$(find amr_robots_gazebo)/spawn-pioneer3at.launch">
+        <arg name="name" value="r1" />
+        <arg name="x" value="0.0" />
+        <arg name="y" value="-0.5" />
+        <arg name="z" value="-0.5" />
+        <remap from="sim_p3at/odom" to="odom" />
+    </include>
+    </group>
+
+    <include file="$(find amr_robots_gazebo)/spawn-pioneer3at.launch">
+        <arg name="name" value="r2" />
+        <arg name="x" value="3.0" />
+        <arg name="y" value="-0.5" />
+        <arg name="z" value="-0.5" />
+    </include>
+
+    <node pkg="tf" type="static_transform_publisher" name="base_to_odom_r1"
+        args="0.0 -0.0 0.0 0.0 0.0 0.0 base_link r1/odom 200" />
+
+    <node pkg="tf" type="static_transform_publisher" name="base_to_odom_r2"
+        args="0.0  0.0 0.0 0.0 0.0 0.0 base_link r2/odom 200" />
+
+</launch>
+
