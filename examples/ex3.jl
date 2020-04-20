@@ -4,42 +4,18 @@
  = Example of utilization of the library 'ros_interface'
  =
  = Maintainer: Sidney Carvalho - sydney.rdc@gmail.com
- = Last Change: 2020 Abr 20 16:54:30
+ = Last Change: 2020 Abr 20 17:32:12
  = Info: Send and receive information from a node in the ROS environment.
  =============================================================================#
 
-# check if the Cxx package is installed
-if typeof(Pkg.installed("Cxx")) == Void
-    Pkg.add("Cxx")
-end
+# add ros_interface wrapper to ros_interface.hpp
+include("../julia/ros_interface.jl")
 
-# package to wrapper C++ code (demands Julia v0.6 or later)
-using Cxx
+# to call ros_interface functions
+using ROS_INTERFACE
 
-# default C++ lib and include paths
-const path_to_lib = "../lib/"
-const path_to_include = "../include/"
-
-# define the path_to_include as default C++ headers folder
-addHeaderDir(path_to_include, kind=C_System)
-
-# load ROS interface shared library
-Libdl.dlopen(path_to_lib * "libros_interface.so", Libdl.RTLD_GLOBAL)
-
-cxxinclude("ros_interface.hpp")                 # ROS interface header
-cxxinclude("vector")                            # C++ vector header
-
-# instantiate a 'ros_interface' object
-ros_com = @cxxnew ros_interface(pointer("julia_ros"))
-
-# initial positions
-pose1 = @cxxnew space_t()
-
-@cxx pose1->set_x(2)
-@cxx pose1->set_y(4)
-
-# initial velocities
-vel1 = @cxxnew space_t()
+# start ROS interface
+ros_interface("exe3")
 
 # insert the robots (if do you want to use another type of robot, change
 # the second parameter of 'add_node' with the following values - for now, julia
@@ -47,7 +23,7 @@ vel1 = @cxxnew space_t()
 # T_REAL for rosaria robots (use 1)
 # T_STAGE for stageros robots (use 2)
 # T_TURTLE for turtlesim robots (use 3)
-@cxx ros_com->add_node(1, 2, pointer("robot_1"), pose1)
+add_bot(1, 2, "robot_1", [0.0; 0.0; 0.0])
 
 # control saturations
 const MAX_VX = 1                  # maximum linear velocity
@@ -73,15 +49,12 @@ u = zeros(2)
 x = zeros(3)
 
 # main loop
-while @cxx ros_com->ros_ok()
+while ros_ok()
     # set the data capture frequency (s)
-    @cxx ros_com->clock(0.1)
+    clock(0.1)
 
     # read positions from ROS
-    pose1 = @cxx ros_com->node_pose(1)
-    x[1] = @cxx pose1->x
-    x[2] = @cxx pose1->y
-    x[3] = @cxx pose1->yaw
+    x = get_pose(1)
 
     # sides of triangle formed by current point and reference
     op = r[2] - x[2]                            # opposite side
@@ -135,16 +108,12 @@ while @cxx ros_com->ros_ok()
     # calculate the linear control signal
     u[1] = MAX_VX*kx*(1 - abs(ka))
 
-    # set the calculated velocities
-    @cxx vel1->set_x(u[1])
-    @cxx vel1->set_yaw(u[2])
-
     # send velocities to ROS
-    @cxx ros_com->node_vel(1, vel1)
+    set_vel(1, [u[1]; 0.0; u[2]])
 
     # print robot's position and control actions
     @printf("x_r:%.2f y_r:%.2f x:%.2f y:%.2f k_x:%.2f u_x:%.2f\n", r[1], r[2], x[1], x[2], kx, u[1])
     @printf("θ_r:%.2f θ:%.2f k_θ:%.2f u_θ:%.2f\n", r[3]*180/pi, x[3]*180/pi, ka, u[2]*180/pi)
-    println("time->$(@cxx ros_com->get_time())")
+    println("time->$(get_time())")
 end
 

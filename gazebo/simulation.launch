@@ -7,7 +7,7 @@
     <!-- Add robot 1 -->
     <include file="$(find ros_interface)/gazebo/spawn_p3at.launch" >
         <arg name="init_pose" value="-x -1 -y 5 -z 0.5 -Y 1.57" />
-        <arg name="robot_name" value="robot1" />
+        <arg name="robot_name" value="p3at" />
     </include>
 
     <!-- Add robot 2 -->
