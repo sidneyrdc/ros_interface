@@ -1,6 +1,6 @@
 <launch>
     <arg name="robot_name" default="p3at" />
-    <arg name="init_pose" default="-x 0 -y 0 -z 0" />
+    <arg name="robot_pose" default="-x 0 -y 0 -z 0" />
 
     <group ns="$(arg robot_name)">
         <!-- Set the prefix of the robot's tf messages -->
@@ -10,7 +10,7 @@
         <param name="robot_description" command="$(find xacro)/xacro.py '$(find amr_robots_description)/urdf/pioneer3at.urdf.xacro'" />
 
         <!-- Spawn the robot at Gazebo -->
-        <node name="spawn_$(arg robot_name)" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model $(arg robot_name) $(arg init_pose)" />
+        <node name="spawn_$(arg robot_name)" pkg="gazebo_ros" type="spawn_model" args="-param robot_description -urdf -model $(arg robot_name) $(arg robot_pose)" />
 
         <!-- Nodes to publish absolute pose for the robot and joints -->
         <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />

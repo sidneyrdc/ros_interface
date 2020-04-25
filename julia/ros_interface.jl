@@ -2,7 +2,7 @@
  = Julia Wrapper to the ros_interface.h Header
  =
  = Maintainer: Sidney Carvalho - sydney.rdc@gmail.com
- = Last Change: 2020 Abr 20 17:20:23
+ = Last Change: 2020 Abr 20 17:46:26
  = Info: Maps all functions of ros_interface into native julia code.
  =============================================================================#
 

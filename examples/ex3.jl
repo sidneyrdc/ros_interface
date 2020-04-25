@@ -4,7 +4,7 @@
  = Example of utilization of the library 'ros_interface'
  =
  = Maintainer: Sidney Carvalho - sydney.rdc@gmail.com
- = Last Change: 2020 Abr 20 17:32:12
+ = Last Change: 2020 Abr 24 23:50:33
  = Info: Send and receive information from a node in the ROS environment.
  =============================================================================#
 
@@ -23,7 +23,7 @@ ros_interface("exe3")
 # T_REAL for rosaria robots (use 1)
 # T_STAGE for stageros robots (use 2)
 # T_TURTLE for turtlesim robots (use 3)
-add_bot(1, 2, "robot_1", [0.0; 0.0; 0.0])
+add_bot(1, 2, "r1", [0.0; 0.0; 0.0])
 
 # control saturations
 const MAX_VX = 1                  # maximum linear velocity
