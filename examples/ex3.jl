@@ -4,7 +4,7 @@
  = Example of utilization of the library 'ros_interface'
  =
  = Maintainer: Sidney Carvalho - sydney.rdc@gmail.com
- = Last Change: 2020 Abr 24 23:50:33
+ = Last Change: 2021 Mar 21 23:28:41
  = Info: Send and receive information from a node in the ROS environment.
  =============================================================================#
 
@@ -40,7 +40,7 @@ kx = 0                            # to linear control
 ka = 0                            # to angular control
 
 # reference (x, y, θ)
-r = [3.0, 2.0, 0.0]
+r = [3.0, 4.5, 0.0]
 
 # control signals (vx, vθ)
 u = zeros(2)
@@ -51,7 +51,7 @@ x = zeros(3)
 # main loop
 while ros_ok()
     # set the data capture frequency (s)
-    clock(0.1)
+    clock(0.01)
 
     # read positions from ROS
     x = get_pose(1)
